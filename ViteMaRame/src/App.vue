@@ -17,7 +17,7 @@ import HelloWorld from "./components/HelloWorld.vue";
       <HelloWorld msg="You did it! Test Push" />
 
       <nav>
-        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/">Push</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
     </div>
