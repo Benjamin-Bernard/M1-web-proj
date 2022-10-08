@@ -3,22 +3,17 @@ import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-  <header>
-
-    <div class="wrapper">
-
+ <!-- <header>
       <nav>
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
       </nav>
-    </div>
-  </header>
-
+  </header>-->
+  <RouterLink to="/"><div class="test"><font-awesome-icon :icon="['fas', 'home']" size="2x"/></div></RouterLink>
   <RouterView />
 </template>
 
-<style scoped>
-header {
+<style>
+/*header {
   line-height: 1.5;
   max-height: 100vh;
 }
@@ -75,5 +70,12 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+}*/
+
+.test{
+  color:rgb(34, 50, 128);
+  margin-top: 5px;
+  margin-left:5px;
 }
+
 </style>
