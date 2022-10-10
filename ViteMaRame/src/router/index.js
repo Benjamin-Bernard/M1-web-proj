@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../components/HomePage.vue';
+import MesItineraires from '../components/MesItineraires.vue';
 
 
 
@@ -29,7 +30,8 @@ const router = createRouter({
     },
     {
       path:'/MesItineraires',
-      name:'MesItineraires'
+      name:'MesItineraires',
+      component:MesItineraires
     }
   ]
 })
