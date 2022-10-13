@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../components/HomePage.vue';
 import MesItineraires from '../components/MesItineraires.vue';
+import CalculerItineraire from '../components/CalculerItineraire.vue';
 
 
 
@@ -14,11 +15,8 @@ const router = createRouter({
     },
     {
       path: '/CalculerItineraire',
-      name: 'CalculerItineraire'
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      //component: () => import('../views/AboutView.vue')
+      name: 'CalculerItineraire',
+      component: CalculerItineraire
     },
     {
       path: '/ItineraireActuel',
