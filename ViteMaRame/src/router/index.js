@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../components/HomePage.vue';
 import MesItineraires from '../components/MesItineraires.vue';
 import CalculerItineraire from '../components/CalculerItineraire.vue';
-
+import InfosTrafic from '../components/InfosTrafic.vue';
 
 
 const router = createRouter({
@@ -24,7 +24,8 @@ const router = createRouter({
     },
     {
       path: '/InfosTrafic',
-      name:'InfosTrafic'
+      name:'InfosTrafic',
+      component:InfosTrafic
     },
     {
       path:'/MesItineraires',
