@@ -1,11 +1,11 @@
 <template>
     <div>
         <h1>Calculer mon itinéraire</h1>
-        <div class="form" @submit.prevent="checkData() == false">
+        <div class="form">
             <form>
                 <p id="inavalid-data-msg" v-if="invalidData">Le mot de passe doit être composée d'au moins 8 caractères</p>
-                <input class="wide-input" type="text" placeholder="Choisissez un point de départ" v-model="depart" required>
-                <input class="wide-input" type="text" placeholder="Choisissez une destination" v-model="destination" required>
+                <input class="wide-input" type="text" placeholder="Choisissez un point de départ" v-model="form.depart" required>
+                <input class="wide-input" type="text" placeholder="Choisissez une destination" v-model="form.destination" required>
                 <p>Options</p>
                 <select class="medium-input" name="time" id="time" v-model="form.time" :change="getTime()">
                     <option value="leaveNow">Partir maintenant</option>
@@ -21,14 +21,16 @@
                     <option value="tramway">Tramway</option>
                 </select>
                 <div class="btn-container">
-                    <button>Calculer</button>
+                    <button @click="searchAdresses">Calculer</button>
                 </div>
+                <p>{{ form.depart }}</p>
             </form>
         </div>
     </div>
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -54,14 +56,41 @@ export default {
             return false
         }
     }
+   
+    },
+    computed: {
+      searchAdresses() {
+      const URL = "https://api-adresse.data.gouv.fr/search/?q="
+      fetch(URL + this.form.depart + "&limit=5")
+        .then((res) => res.json())
+        .then((data) => {
+          const adresses = []
+          for (let i = 0; i < data.features.length; i++) {
+              const adress = {
+                  name: data.features[i].properties.name,
+                  postcode: data.features[i].properties.postcode,
+                  city: data.features[i].properties.city,
+                  coordinates: {
+                      lon: data.features[i].geometry.coordinates[0],
+                      lat: data.features[i].geometry.coordinates[1]
+                  }
+              }
+              adresses.push(adress) 
+              console.log(adresses)  
+              return adresses 
+          }
+        })
+
+    }
+    }
   }
-}
 </script>
 
 <style scoped>
 
 h1 {
   text-align: center;
+  margin-bottom: 64px;
 }
 
 .form { 
