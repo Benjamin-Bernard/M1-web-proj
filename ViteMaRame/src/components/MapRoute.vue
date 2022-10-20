@@ -5,24 +5,38 @@
 
 <script>
 import leaflet from "leaflet";
-import axios from "axios";
+import http from "../http-common.js";
 
 export default {
   name: "MapRoute",
-
+  //Lien pour l'info traffic
+  // https://api.navitia.io/v1/coverage/fr-idf/disruptions?data_freshness=realtime&
+  //Lien pour gérer l'info selon les coordonnées
+ // https://api.navitia.io/v1/coverage/fr-idf/disruptions?from=2.37768%3B48.85334&to=2.2922926%3B48.8583736&
   methods: {
-    callAPI() {
-      axios.get('https://db179dae-2cfa-49e3-8792-b608d70a3318@api.navitia.io/v1/coverage/fr-idf/journeys?from=2.3749036%3B48.8467927&to=2.2922926%3B48.8583736&')
-          .then(response => console.log(response))
+    async callAPI() {
+      await http.get('https://api.navitia.io/v1/coverage/fr-idf/journeys?from=2.37768%3B48.85334&to=2.2922926%3B48.8583736&')
+          .then((response) => {
+            console.log(response);
+            localStorage.setItem('itineraire', JSON.stringify(response.data));
+          })
           .catch(err => console.log(err))
     }
   },
   mounted: function () {
-    var map = leaflet.map('map').setView([51.505, -0.09], 13);
+    var map = leaflet.map('map').setView([48.8534100, 2.3488000], 13);
     leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
+
+    var latlngs = [
+      [48.825051, 2.273457],
+      [48.892956, 2.288168],
+    ];
+
+     leaflet.polyline(latlngs, {color: 'red'}).addTo(map);
+
     this.callAPI();
   }
 
@@ -32,6 +46,6 @@ export default {
 
 <style scoped>
 #map {
-  height: 500px;
+  height: 800px;
 }
 </style>

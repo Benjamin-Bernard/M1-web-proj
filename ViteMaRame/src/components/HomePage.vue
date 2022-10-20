@@ -25,7 +25,8 @@
 <script>
 export default {
   name: "HomePage",
-  methods: {}
+  methods: {
+  }
 };
 </script>
 
