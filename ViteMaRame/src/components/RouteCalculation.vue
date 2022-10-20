@@ -32,6 +32,7 @@
 <script>
 
 export default {
+  name: "RouteCalculation",
   data() {
     return {
         invalidData: false,
