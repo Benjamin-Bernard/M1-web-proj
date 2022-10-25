@@ -3,14 +3,36 @@
   <div class="map_container">
     <div class="list_journeys">
       <h1>Journeys found</h1>
-      <ul>
-        <li v-for="journey in journeys">
-          test1
-          <ul>
-            <li>test2</li>
-          </ul>
-        </li>
-      </ul>
+      <p>First journey:</p>
+      <table v-for="(section,index) in sections">
+        <thead>
+        <tr>
+          <th>Section</th>
+          <th>Departure</th>
+          <th>Arrival</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Mode</th>
+          <th>Type</th>
+          <th>Physical Mode</th>
+          <th>Code</th>
+        </tr>
+        </thead>
+        <tbody v-for="(sec,i) in section" :key="i">
+          <tr>
+            <td>{{i}}</td>
+            <td>{{sec.departure_date_time}}</td>
+            <td>{{sec.arrival_date_time}}</td>
+            <td>{{sec.from.address.name}}</td>
+            <td>{{}}</td>
+            <td>{{sec.mode}}</td>
+            <td>{{sec.type}}</td>
+          </tr>
+          <tr>
+          </tr>
+        </tbody>
+        <br>
+      </table>
     </div>
     <div id="map"></div>
 
@@ -35,19 +57,25 @@ export default {
   //'https://api.navitia.io/v1/coverage/fr-idf/journeys?from='+from[0]+'%3B'+from[1]+'&=to'+to[0]+'%3B'+to[1]+'&'
   data() {
     return {
-      journeys:[]
+      sections:[]
+    }
+  },
+  computed:{
+    formatHour(dateTime){
+      console.log(dateTime);
+      //return dateTime.substring(9).match(/.{2}/g).join(':');
     }
   },
   methods: {
     async callAPI(from, to) {
       await http.get('https://api.navitia.io/v1/coverage/fr-idf/journeys?from=' + from[0] + '%3B' + from[1] + '&to=' + to[0] + '%3B' + to[1] + '&count=3&')
           .then((response) => {
-            localStorage.setItem('routes', JSON.stringify(response.data));
+            localStorage.setItem('journeys', JSON.stringify(response.data.journeys));
           })
           .catch(err => console.log(err))
     },
     drawRoutes(map) {
-      const routeTab = JSON.parse(localStorage.getItem('routes'));
+      const routeTab = JSON.parse(localStorage.getItem('journeys'));
       const sections = [];
       const myStyle = {
         color: "",
@@ -63,7 +91,7 @@ export default {
         radius: 7
       };
 
-      routeTab.journeys.forEach((element) => {
+      routeTab.forEach((element) => {
         sections.push(element.sections);
       })
 
@@ -72,16 +100,16 @@ export default {
         element1.forEach((element2) => {
 
 
-          myStyle.color = element2.type == "public_transport" ? "#" + element2.display_informations.color : '#000';
+          myStyle.color = element2.type === "public_transport" ? "#" + element2.display_informations.color : '#000';
 
-          myStyle.dashArray = element2.type == "street_network" || element2.type == "transfer" ? '5,10' : '';
+          myStyle.dashArray = element2.type === "street_network" || element2.type === "transfer" ? '5,10' : '';
 
           if (element2.geojson != null) {
 
             leaflet.geoJSON(element2.geojson, {
               style: myStyle,
               onEachFeature: function (feature, layer) {
-                if (element2.type == "public_transport") {
+                if (element2.type === "public_transport") {
                   element2.stop_date_times.forEach((element3) => {
                     leaflet.circleMarker([element3.stop_point.coord.lat, element3.stop_point.coord.lon], circleMarker, circleMarker.color = myStyle.color)
                         .bindPopup(element3.stop_point.name)
@@ -100,8 +128,17 @@ export default {
       });
     },
     displayRoutesPage(){
-      this.journeys.push(JSON.parse(localStorage.getItem('routes')).journeys);
-      console.log(this.journeys);
+        const routesJourneys = JSON.parse(localStorage.getItem('journeys'));
+        routesJourneys.forEach((journey) => {
+          console.log(journey.sections);
+          journey.sections.forEach((elem) => {
+            console.log(elem);
+            this.sections.push(elem);
+
+          })
+        });
+        console.log(this.sections);
+
     }
   },
   mounted: async function () {
@@ -111,7 +148,8 @@ export default {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    const adressData = JSON.parse(localStorage.getItem('adresse_route'));
+    const adressData = JSON.parse(localStorage.getItem(1));
+    console.log(adressData);
     const from = adressData.depart.geometry.coordinates;
     const to = adressData.destination.geometry.coordinates;
 
@@ -126,7 +164,6 @@ export default {
 
   }
 
-
 }
 </script>
 
@@ -140,5 +177,13 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+table, th, td {
+  border: 1px solid white;
+  border-collapse: collapse;
+}
+th, td {
+  background-color: #96D4D4;
 }
 </style>
