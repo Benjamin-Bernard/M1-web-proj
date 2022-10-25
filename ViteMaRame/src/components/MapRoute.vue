@@ -21,9 +21,9 @@
         <tbody v-for="(sec,i) in section" :key="i">
           <tr>
             <td>{{i}}</td>
-            <td>{{sec.departure_date_time}}</td>
-            <td>{{sec.arrival_date_time}}</td>
-            <td>{{sec.from.address.name}}</td>
+            <td>{{ }}</td>
+            <td>{{}}</td>
+            <td>{{}}</td>
             <td>{{}}</td>
             <td>{{sec.mode}}</td>
             <td>{{sec.type}}</td>
@@ -37,7 +37,7 @@
     <div id="map"></div>
 
   </div>
-
+  <button @click="">Add Favorite</button>
 
 </template>
 
@@ -133,10 +133,11 @@ export default {
           console.log(journey.sections);
           journey.sections.forEach((elem) => {
             console.log(elem);
-            this.sections.push(elem);
+           // this.sections.push(elem);
 
           })
         });
+        this.sections.push(journey.sections);
         console.log(this.sections);
 
     }
@@ -148,7 +149,7 @@ export default {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    const adressData = JSON.parse(localStorage.getItem(1));
+    const adressData = JSON.parse(localStorage.getItem('address_from_to'));
     console.log(adressData);
     const from = adressData.depart.geometry.coordinates;
     const to = adressData.destination.geometry.coordinates;

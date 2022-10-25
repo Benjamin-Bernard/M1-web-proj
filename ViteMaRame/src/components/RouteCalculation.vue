@@ -114,7 +114,7 @@ export default {
     },
     storeAdresses() {
       //this.$emit('sendAdresses', this.adresses)
-      localStorage.setItem(localStorage.length+1, JSON.stringify(this.adresses));
+      localStorage.setItem('address_from_to', JSON.stringify(this.adresses));
       this.$router.push("/MapRoute");
 
     }
