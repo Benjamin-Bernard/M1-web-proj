@@ -48,13 +48,6 @@ import leaflet from "leaflet";
 import http from "../http-common.js";
 export default {
   name: "MapRoute",
-  //Lien pour l'info traffic
-  // https://api.navitia.io/v1/coverage/fr-idf/disruptions?data_freshness=realtime&
-  //Lien pour gérer l'info traffic selon les coordonnées
-  // https://api.navitia.io/v1/coverage/fr-idf/disruptions?from=2.37768%3B48.85334&to=2.2922926%3B48.8583736&
-  // https://api.navitia.io/v1/coverage/fr-idf/journeys?from=2.37768%3B48.85334&to=2.2922926%3B48.8583736&
-  //https://api.navitia.io/v1/coverage/fr-idf/journeys?from=2.25425%3B48.82106&to=2.36373%3B48.78867&
-  //'https://api.navitia.io/v1/coverage/fr-idf/journeys?from='+from[0]+'%3B'+from[1]+'&=to'+to[0]+'%3B'+to[1]+'&'
   data() {
     return {
       sections: [],

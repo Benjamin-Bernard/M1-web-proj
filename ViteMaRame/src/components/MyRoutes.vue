@@ -1,7 +1,7 @@
 <template>
   <h1>Mes itinéraires</h1>
   <ul
-    v-for="(favourite, index) in this.getFavArray()"
+    v-for="(favourite, index) in getFavArray"
     :key="favourite"
     class="favouritesContainer"
   >
@@ -87,10 +87,6 @@ export default {
       }, 100);
       return JSON.parse(localStorage.getItem("journeys" + index));
     },
-    getFavArray() {
-      console.log(JSON.parse(localStorage.getItem("favs")));
-      return JSON.parse(localStorage.getItem("favs"));
-    },
     secondsToMinutesAndSeconds(seconds) {
       let minutes = Math.floor(seconds / 60);
       let remainingSeconds = seconds % 60;
@@ -129,7 +125,12 @@ export default {
       this.$forceUpdate();
     },
   },
-  computed: {},
+  computed: {
+    getFavArray() {
+      console.log(JSON.parse(localStorage.getItem("favs")));
+      return JSON.parse(localStorage.getItem("favs"));
+    },
+  },
   mounted() {},
 };
 </script>
