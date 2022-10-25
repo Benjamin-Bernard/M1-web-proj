@@ -187,6 +187,7 @@ export default {
 
   mounted: async function () {
     //localStorage.removeItem("favs");
+    localStorage.removeItem("journeys");
     const map = leaflet.map("map").setView([48.85341, 2.3488], 13);
     leaflet
       .tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
