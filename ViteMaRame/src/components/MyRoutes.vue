@@ -1,7 +1,7 @@
 <template>
   <h1>Mes itinéraires</h1>
   <ul
-    v-for="(favourite, index) in this.getFavArray()"
+    v-for="(favourite, index) in getFavArray"
     :key="favourite"
     class="favouritesContainer"
   >
@@ -87,10 +87,6 @@ export default {
       }, 100);
       return JSON.parse(localStorage.getItem("journeys" + index));
     },
-    getFavArray() {
-      console.log(JSON.parse(localStorage.getItem("favs")));
-      return JSON.parse(localStorage.getItem("favs"));
-    },
     secondsToMinutesAndSeconds(seconds) {
       let minutes = Math.floor(seconds / 60);
       let remainingSeconds = seconds % 60;
@@ -129,7 +125,12 @@ export default {
       this.$forceUpdate();
     },
   },
-  computed: {},
+  computed: {
+    getFavArray() {
+      console.log(JSON.parse(localStorage.getItem("favs")));
+      return JSON.parse(localStorage.getItem("favs"));
+    },
+  },
   mounted() {},
 };
 </script>
@@ -171,7 +172,8 @@ h1 {
 .journeysContainer {
   text-align: center;
   margin: 10px auto;
-  width: 80%;
+  min-width: 80%;
+  max-width: 100%;
   background: whitesmoke;
   border-radius: 4px;
   box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px,
@@ -184,7 +186,7 @@ h1 {
 .favouritesContainer {
   text-align: center;
   margin: 10px auto;
-  max-width: 70%;
+  max-width: 80%;
   background: white;
   border-radius: 4px;
   box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px,
