@@ -2,8 +2,10 @@
   <!--MAP-->
   <div class="map_container">
     <div class="list_journeys">
-      <h1>Journeys found</h1>
-      <p>First journey:</p>
+      <button @click="addFavourite" class="button">Add Favorite</button>
+      <h1>Map</h1>
+      <div id="map"></div>
+      <h1>Journeys found : {{ sections.length }}</h1>
       <table v-for="section in sections" :key="section">
         <thead>
           <tr>
@@ -36,18 +38,14 @@
           </tr>
           <tr></tr>
         </tbody>
-        <br />
       </table>
     </div>
-    <div id="map"></div>
   </div>
-  <button @click="addFavourite" class="button">Add Favorite</button>
 </template>
 
 <script>
 import leaflet from "leaflet";
 import http from "../http-common.js";
-
 export default {
   name: "MapRoute",
   //Lien pour l'info traffic
@@ -55,13 +53,11 @@ export default {
   //Lien pour gérer l'info traffic selon les coordonnées
   // https://api.navitia.io/v1/coverage/fr-idf/disruptions?from=2.37768%3B48.85334&to=2.2922926%3B48.8583736&
   // https://api.navitia.io/v1/coverage/fr-idf/journeys?from=2.37768%3B48.85334&to=2.2922926%3B48.8583736&
-
   //https://api.navitia.io/v1/coverage/fr-idf/journeys?from=2.25425%3B48.82106&to=2.36373%3B48.78867&
   //'https://api.navitia.io/v1/coverage/fr-idf/journeys?from='+from[0]+'%3B'+from[1]+'&=to'+to[0]+'%3B'+to[1]+'&'
   data() {
     return {
       sections: [],
-      dateTime: "",
     };
   },
   methods: {
@@ -79,6 +75,7 @@ export default {
             "&count=3&"
         )
         .then((response) => {
+          localStorage.removeItem("journeys");
           localStorage.setItem(
             "journeys",
             JSON.stringify(response.data.journeys)
@@ -102,23 +99,19 @@ export default {
         weight: 1,
         radius: 7,
       };
-
       routeTab.forEach((element) => {
         sections.push(element.sections);
       });
-
       sections.forEach((element1) => {
         element1.forEach((element2) => {
           myStyle.color =
             element2.type === "public_transport"
               ? "#" + element2.display_informations.color
               : "#000";
-
           myStyle.dashArray =
             element2.type === "street_network" || element2.type === "transfer"
               ? "5,10"
               : "";
-
           if (element2.geojson != null) {
             leaflet
               .geoJSON(element2.geojson, {
@@ -184,9 +177,12 @@ export default {
       console.log(JSON.parse(localStorage.getItem("favs")));
     },
   },
-
   mounted: async function () {
-    localStorage.removeItem("journeys");
+    if (!JSON.parse(localStorage.getItem("favs"))) {
+      console.log("?????");
+      localStorage.setItem("favs", JSON.stringify([]));
+    }
+    console.log(JSON.parse(localStorage.getItem("favs")));
     const map = leaflet.map("map").setView([48.85341, 2.3488], 13);
     leaflet
       .tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -195,54 +191,59 @@ export default {
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       })
       .addTo(map);
-
     const adressData = JSON.parse(localStorage.getItem("address_from_to"));
     console.log(adressData);
     const from = adressData.depart.geometry.coordinates;
     const to = adressData.destination.geometry.coordinates;
-
     leaflet.marker([from[1], from[0]]).bindPopup("Start").addTo(map);
     leaflet.marker([to[1], to[0]]).bindPopup("End").addTo(map);
-
     await this.callAPI(from, to);
-
     this.drawRoutes(map);
-
     this.displayRoutesPage();
-
-    if (!JSON.parse(localStorage.getItem("favs"))) {
-      console.log("?????");
-      localStorage.setItem("favs", JSON.stringify([]));
-    }
-    console.log(JSON.parse(localStorage.getItem("favs")));
   },
 };
 </script>
 
 <style scoped>
+h1 {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 #map {
   height: 400px;
   width: 800px;
+  margin-left: 70px;
 }
-
 .map_container {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
 }
-
-table,
-th,
-td {
-  border: 1px solid white;
+table {
+  width: 900px;
+  margin-bottom: 15px;
+  border: 1px solid rgb(34, 50, 128);
   border-collapse: collapse;
+  color: black;
+}
+table thead tr {
+  color: whitesmoke;
+  background-color: rgb(34, 50, 128);
+  font-size: 1rem;
+}
+table tbody tr {
+  border: 1px solid lightgray;
+  background-color: #ececec;
+}
+table th {
+  letter-spacing: 0.075rem;
+}
+table th,
+table td {
+  padding: 5px;
+  font-weight: normal;
   text-align: center;
 }
-th,
-td {
-  background-color: #96d4d4;
-}
-
 .button {
   text-decoration: none;
   text-align: center;
@@ -263,7 +264,6 @@ td {
   cursor: pointer;
   border: unset;
 }
-
 .button:hover {
   color: #fff;
   background-color: rgb(34, 50, 128);
