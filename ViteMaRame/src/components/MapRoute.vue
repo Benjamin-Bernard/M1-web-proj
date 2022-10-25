@@ -4,7 +4,7 @@
     <div class="list_journeys">
       <h1>Journeys found</h1>
       <p>First journey:</p>
-      <table v-for="(section,index) in sections">
+      <table v-for="(section) in sections">
         <thead>
         <tr>
           <th>Section</th>
@@ -18,15 +18,17 @@
           <th>Code</th>
         </tr>
         </thead>
-        <tbody v-for="(sec,i) in section" :key="i">
-          <tr>
-            <td>{{i}}</td>
-            <td>{{ }}</td>
-            <td>{{}}</td>
-            <td>{{}}</td>
-            <td>{{}}</td>
+        <tbody v-for="(sec,index) in section" :key="index">
+          <tr v-if="sec.type != 'waiting'">
+            <td>{{index}}</td>
+            <td>{{sec.departure_date_time}}</td>
+            <td >{{sec.arrival_date_time}}</td>
+            <td v-if="sec.from != null">{{sec.from.name}}</td>
+            <td v-if="sec.to != null">{{sec.to.name}}</td>
             <td>{{sec.mode}}</td>
             <td>{{sec.type}}</td>
+            <td v-if="sec.display_informations != null">{{sec.display_informations.commercial_mode}}</td>
+            <td v-if="sec.display_informations != null">{{sec.display_informations.code}}</td>
           </tr>
           <tr>
           </tr>
@@ -37,7 +39,7 @@
     <div id="map"></div>
 
   </div>
-  <button @click="">Add Favorite</button>
+  <button @click="" class="button">Add Favorite</button>
 
 </template>
 
@@ -57,13 +59,8 @@ export default {
   //'https://api.navitia.io/v1/coverage/fr-idf/journeys?from='+from[0]+'%3B'+from[1]+'&=to'+to[0]+'%3B'+to[1]+'&'
   data() {
     return {
-      sections:[]
-    }
-  },
-  computed:{
-    formatHour(dateTime){
-      console.log(dateTime);
-      //return dateTime.substring(9).match(/.{2}/g).join(':');
+      sections:[],
+      dateTime:""
     }
   },
   methods: {
@@ -130,16 +127,10 @@ export default {
     displayRoutesPage(){
         const routesJourneys = JSON.parse(localStorage.getItem('journeys'));
         routesJourneys.forEach((journey) => {
-          console.log(journey.sections);
-          journey.sections.forEach((elem) => {
-            console.log(elem);
-           // this.sections.push(elem);
-
-          })
+          if(journey.sections){
+            this.sections.push(journey.sections);
+          }
         });
-        this.sections.push(journey.sections);
-        console.log(this.sections);
-
     }
   },
   mounted: async function () {
@@ -178,13 +169,43 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+
 }
 
 table, th, td {
   border: 1px solid white;
   border-collapse: collapse;
+  text-align:center;
 }
 th, td {
   background-color: #96D4D4;
+}
+
+
+.button {
+  text-decoration: none;
+  text-align: center;
+  padding-top: 12px;
+  margin-top: 10px;
+  background-color: #fff;
+  width: 200px;
+  height: 50px;
+  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+  rgba(0, 0, 0, 0.12) 0px 1px 1px 0px, rgb(34, 50, 128) 0px 0px 0px 1px,
+  rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+  rgba(60, 66, 87, 0.08) 0px 2px 5px 0px;
+  color: rgb(34, 50, 128);
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 4px;
+  outline-color: rgb(34 50 128 / 0.5);
+  cursor: pointer;
+  border: unset;
+}
+
+.button:hover {
+  color: #fff;
+  background-color: rgb(34, 50, 128);
+  transition: background-color 0.5s linear;
 }
 </style>
