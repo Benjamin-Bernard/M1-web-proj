@@ -171,7 +171,8 @@ h1 {
 .journeysContainer {
   text-align: center;
   margin: 10px auto;
-  width: 80%;
+  min-width: 80%;
+  max-width: 100%;
   background: whitesmoke;
   border-radius: 4px;
   box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px,
@@ -184,7 +185,7 @@ h1 {
 .favouritesContainer {
   text-align: center;
   margin: 10px auto;
-  max-width: 70%;
+  max-width: 80%;
   background: white;
   border-radius: 4px;
   box-shadow: rgba(60, 66, 87, 0.12) 0px 7px 14px 0px,
