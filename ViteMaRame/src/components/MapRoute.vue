@@ -21,8 +21,8 @@
         <tbody v-for="(sec,index) in section" :key="index">
           <tr v-if="sec.type != 'waiting'">
             <td>{{index}}</td>
-            <td>{{sec.departure_date_time}}</td>
-            <td >{{sec.arrival_date_time}}</td>
+            <td>{{ formatHour(sec.departure_date_time) }}</td>
+            <td >{{ formatHour(sec.arrival_date_time) }}</td>
             <td v-if="sec.from != null">{{sec.from.name}}</td>
             <td v-if="sec.to != null">{{sec.to.name}}</td>
             <td>{{sec.mode}}</td>
@@ -131,8 +131,13 @@ export default {
             this.sections.push(journey.sections);
           }
         });
+    },
+    formatHour(dateTime) {
+      const time = dateTime.split('T')[1]
+      return time.substring(0,2) + ':' + time.substring(2,4);
     }
   },
+
   mounted: async function () {
     const map = leaflet.map('map').setView([48.8534100, 2.3488000], 13);
     leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
