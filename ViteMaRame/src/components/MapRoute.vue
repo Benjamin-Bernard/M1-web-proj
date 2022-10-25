@@ -2,8 +2,10 @@
   <!--MAP-->
   <div class="map_container">
     <div class="list_journeys">
-      <h1>Journeys found</h1>
-      <p>First journey:</p>
+      <button @click="" class="button">Add Favorite</button>
+      <h1>Map</h1>
+      <div id="map"></div>
+      <h1>Journeys found : {{sections.length}}</h1>
       <table v-for="(section) in sections">
         <thead>
         <tr>
@@ -33,13 +35,10 @@
           <tr>
           </tr>
         </tbody>
-        <br>
       </table>
     </div>
-    <div id="map"></div>
-
   </div>
-  <button @click="" class="button">Add Favorite</button>
+
 
 </template>
 
@@ -59,8 +58,7 @@ export default {
   //'https://api.navitia.io/v1/coverage/fr-idf/journeys?from='+from[0]+'%3B'+from[1]+'&=to'+to[0]+'%3B'+to[1]+'&'
   data() {
     return {
-      sections:[],
-      dateTime:""
+      sections:[]
     }
   },
   methods: {
@@ -165,26 +163,56 @@ export default {
 </script>
 
 <style scoped>
+
+h1{
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 #map {
   height: 400px;
   width:800px;
+  margin-left: 70px;
+
 }
 
 .map_container{
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
 
 }
 
-table, th, td {
-  border: 1px solid white;
+table{
+  width: 900px;
+  margin-bottom: 15px;
+  border: 1px solid rgb(34, 50, 128);
   border-collapse: collapse;
-  text-align:center;
+  color: black;
 }
-th, td {
-  background-color: #96D4D4;
+
+table thead tr {
+  color: whitesmoke;
+  background-color: rgb(34, 50, 128);
+  font-size: 1rem;
 }
+
+table tbody tr {
+  border: 1px solid lightgray;
+  background-color: #ececec;
+}
+
+table th {
+  letter-spacing: 0.075rem;
+}
+
+table th,
+table td {
+  padding: 5px;
+  font-weight: normal;
+  text-align: center;
+}
+
+
 
 
 .button {
