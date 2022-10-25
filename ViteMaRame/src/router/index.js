@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../components/HomePage.vue';
-import MesItineraires from '../components/MesItineraires.vue';
-import CalculerItineraire from '../components/CalculerItineraire.vue';
-import InfosTrafic from '../components/InfosTrafic.vue';
+import MyRoutes from '../components/MyRoutes.vue';
+import RouteCalculation from '../components/RouteCalculation.vue';
+import MapRoute from '../components/MapRoute.vue';
+import TrafficInfo from "../components/TrafficInfo.vue";
 
 
 const router = createRouter({
@@ -14,23 +15,24 @@ const router = createRouter({
       component:HomePage
     },
     {
-      path: '/CalculerItineraire',
-      name: 'CalculerItineraire',
-      component: CalculerItineraire
+      path: '/RouteCalculation',
+      name: 'RouteCalculation',
+      component: RouteCalculation
     },
     {
-      path: '/ItineraireActuel',
-      name: 'ItineraireActuel'
+      path: '/TrafficInfo',
+      name:'TrafficInfo',
+      component:TrafficInfo
     },
     {
-      path: '/InfosTrafic',
-      name:'InfosTrafic',
-      component:InfosTrafic
+      path:'/MyRoutes',
+      name:'MyRoutes',
+      component:MyRoutes
     },
     {
-      path:'/MesItineraires',
-      name:'MesItineraires',
-      component:MesItineraires
+      path:'/MapRoute',
+      name:'MapRoute',
+      component:MapRoute
     }
   ]
 })
